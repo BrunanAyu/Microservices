@@ -1,0 +1,65 @@
+
+// Docker Compose file for the social media microservices
+version: '3.8'
+services:
+  api-gateway:
+    build: ./api-gateway
+    env_file: /api-gateway/.env
+    depends_on:
+     - redis
+     - rabbitmq
+    environment:
+     - REDIS_URI=redis://localhost:6379
+     - RABBITMQ_URI=amqps://vmjwxrlt:ciNgJmA72d9-i28zsH7_nFk9xNKpobeV@chameleon.lmq.cloudamqp.com/vmjwxrlt
+    ports:
+      - "3000:3000"
+  identity-services:
+    build: ./identity-services
+    env_file: /identity-services/.env
+    depends_on:
+     - redis
+     - rabbitmq
+    environment:
+     - REDIS_URI=redis://localhost:6379
+     - RABBITMQ_URI=amqps://vmjwxrlt:ciNgJmA72d9-i28zsH7_nFk9xNKpobeV@chameleon.lmq.cloudamqp.com/vmjwxrlt
+    ports:
+      - "3001:3001"
+  post-service:
+    build: ./post-service
+    env_file: /post-service/.env
+    depends_on:
+     - redis
+     - rabbitmq
+    environment:
+     - REDIS_URI=redis://localhost:6379
+     - RABBITMQ_URI=amqps://vmjwxrlt:ciNgJmA72d9-i28zsH7_nFk9xNKpobeV@chameleon.lmq.cloudamqp.com/vmjwxrlt
+    ports:
+      - "3002:3002"
+  media-service:
+    build: ./media-service
+    env_file: /media-service/.env
+    depends_on:
+     - redis
+     - rabbitmq
+    environment:
+     - REDIS_URI=redis://localhost:6379
+     - RABBITMQ_URI=amqps://vmjwxrlt:ciNgJmA72d9-i28zsH7_nFk9xNKpobeV@chameleon.lmq.cloudamqp.com/vmjwxrlt
+    ports:
+      - "3003:3003"
+  search-service:
+    build: ./search-service
+    env_file: /search-service/.env
+    depends_on:
+     - redis
+     - rabbitmq
+    environment:
+     - REDIS_URI=redis://localhost:6379
+     - RABBITMQ_URI=amqps://vmjwxrlt:ciNgJmA72d9-i28zsH7_nFk9xNKpobeV@chameleon.lmq.cloudamqp.com/vmjwxrlt
+    ports:
+      - "3004:3004"
+
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
